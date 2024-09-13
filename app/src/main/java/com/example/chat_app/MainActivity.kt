@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.chat_app.Screens.Login
 import com.example.chat_app.Screens.SignUp
 import com.example.chat_app.ui.theme.Chat_appTheme
+import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 
 sealed class DestinationScreens(var route: String) {
@@ -25,16 +26,18 @@ sealed class DestinationScreens(var route: String) {
     object Login : DestinationScreens("login")
     object Profile : DestinationScreens("profile")
     object Status : DestinationScreens("status")
+    object ChatList : DestinationScreens("chatList")
+
     object SingleChat : DestinationScreens("singleChat/{chatid}") {
         fun createRoute(id: String) = "singleChat/$id"
     }
 
-    object ChatList : DestinationScreens("chatList")
     object SingleStatus : DestinationScreens("singleStatus/{userId}") {
         fun createRoute(userId: String) = "singleStatus/$userId"
     }
 }
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,17 +51,14 @@ class MainActivity : ComponentActivity() {
     fun AppNavigation() {
         val navController = rememberNavController()
         val vm = hiltViewModel<chatting_ViewModel>()
-        NavHost(navController =navController , startDestination = DestinationScreens.Signup.route){
-            composable(DestinationScreens.Signup.route){
-                SignUp(navController , vm)
+        NavHost(navController = navController, startDestination = DestinationScreens.Signup.route) {
+            composable(DestinationScreens.Signup.route) {
+                SignUp(navController, vm)
             }
-            composable(DestinationScreens.Login.route){
-                Login(navController , vm)
+            composable(DestinationScreens.Login.route) {
+                Login(navController, vm)
             }
         }
 
     }
-
-
 }
-

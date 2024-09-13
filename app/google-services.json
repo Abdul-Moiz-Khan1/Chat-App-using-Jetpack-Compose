@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "179523120455",
+    "project_id": "chat-app-dda42",
+    "storage_bucket": "chat-app-dda42.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:179523120455:android:95c98b8c579be6e48f3062",
+        "android_client_info": {
+          "package_name": "com.example.chat_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8ph8QXJmXybMqIZGUWjWCpuanQusDv78"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
