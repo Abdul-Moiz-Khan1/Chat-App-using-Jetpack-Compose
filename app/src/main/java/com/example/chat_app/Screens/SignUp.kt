@@ -27,6 +27,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.chat_app.CheckSignedIn
+import com.example.chat_app.CommonProgressBar
 import com.example.chat_app.DestinationScreens
 import com.example.chat_app.R
 import com.example.chat_app.chatting_ViewModel
@@ -34,6 +36,9 @@ import com.example.chat_app.navigateTo
 
 @Composable
 fun SignUp(navController: NavController, vm: chatting_ViewModel) {
+
+    CheckSignedIn(vm , navController )
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -110,5 +115,9 @@ fun SignUp(navController: NavController, vm: chatting_ViewModel) {
                     })
 
         }
+    if(vm.inProcess.value){
+        CommonProgressBar()
     }
+    }
+
 }
