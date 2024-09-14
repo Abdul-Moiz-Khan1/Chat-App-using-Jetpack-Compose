@@ -44,5 +44,11 @@ fun CheckSignedIn(vm: chatting_ViewModel, navController: NavController) {
         mutableStateOf(false)
     }
     val signedin = vm.signin.value
+    if(signedin && !alreadySignedin.value){
+        alreadySignedin.value = true
+        navController.navigate( DestinationScreens.ChatList.route){
+            popUpTo(0)
+        }
+    }
 
 }

@@ -24,14 +24,20 @@ class chatting_ViewModel @Inject constructor(
 
 ) : ViewModel() {
 
+    var signin = mutableStateOf(false)
+    var inProcess = mutableStateOf<Boolean>(false)
+    val eventMutableState = mutableStateOf<Event<String>?>(null)
+    val UserData = mutableStateOf<UserData?>(null)
+
     init {
+        val currentuser = auth.currentUser
+        signin.value = currentuser != null
+        currentuser?.uid.let {
+                getUserData(it.toString())
+        }
 
     }
 
-    var inProcess = mutableStateOf<Boolean>(false)
-    val eventMutableState = mutableStateOf<Event<String>?>(null)
-    var signin = mutableStateOf(false)
-    val UserData = mutableStateOf<UserData?>(null)
 
     fun signup(name: String, email: String, number: String, password: String) {
         inProcess.value = true
@@ -80,8 +86,8 @@ class chatting_ViewModel @Inject constructor(
     private fun getUserData(uid: String) {
         inProcess.value = true
         db.collection(USER_NODE).document(uid).addSnapshotListener { value, error ->
-            if(error != null){
-                hanldeException(error , "Cannot Retrieve User")
+            if (error != null) {
+                hanldeException(error, "Cannot Retrieve User")
             }
             if (value != null) {
                 val user = value.toObject<UserData>()
@@ -99,7 +105,6 @@ class chatting_ViewModel @Inject constructor(
         eventMutableState.value = Event(message)
         inProcess.value = false
     }
-
 
 
 }

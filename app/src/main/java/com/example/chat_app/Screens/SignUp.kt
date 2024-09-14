@@ -112,6 +112,7 @@ fun SignUp(navController: NavController, vm: chatting_ViewModel) {
                     .padding(8.dp)
                     .clickable {
                         navigateTo(navController, DestinationScreens.Login.route)
+
                     })
 
         }
