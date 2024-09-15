@@ -107,9 +107,7 @@ class chatting_ViewModel @Inject constructor(
                 handleException(it, "Cannot retrieve user")
             }
         }
-
     }
-
     private fun getUserData(uid: String) {
         inProcess.value = true
         db.collection(USER_NODE).document(uid).addSnapshotListener { value, error ->
