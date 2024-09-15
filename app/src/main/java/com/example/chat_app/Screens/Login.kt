@@ -80,8 +80,6 @@ fun Login(navController: NavController, vm: chatting_ViewModel) {
                 email_state.value = it
             }, label = { Text(text = "Email") }, modifier = Modifier.padding(8.dp)
             )
-
-
             OutlinedTextField(value = password_state.value, onValueChange = {
                 password_state.value = it
             }, label = { Text(text = "Password") }, modifier = Modifier.padding(8.dp)
