@@ -131,7 +131,6 @@ class chatting_ViewModel @Inject constructor(
         eventMutableState.value = Event(message)
         inProcess.value = false
     }
-
     fun login(email:String , password: String){
         if(email.isEmpty() or password.isEmpty()){
             handleException(message = "Please Fill in all the Fields")
