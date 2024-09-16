@@ -55,7 +55,7 @@ class chatting_ViewModel @Inject constructor(
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 signin.value = true
-//                    createOrUpdateProfile(name , number)
+                    createOrUpdateProfile(name , number ,)
                                 Log.d("Check report", "Logged in  ")
                             } else {
                                 handleException(task.exception, "Signup Failed")
@@ -72,7 +72,7 @@ class chatting_ViewModel @Inject constructor(
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     signin.value = true
-                    createOrUpdateProfile(name = name , number = number , null)
+                    createOrUpdateProfile(name = name , number = number)
                     Log.d("Check report", "Logged in  ")
                 } else {
                     handleException(task.exception, "Signup Failed")
@@ -85,7 +85,7 @@ class chatting_ViewModel @Inject constructor(
 
     }
 
-    private fun createOrUpdateProfile(name: String?, number: String?, imageUrl: String?) {
+    private fun createOrUpdateProfile(name: String?, number: String?, imageUrl: String? = null) {
         var uid = auth.currentUser?.uid
         val userData = UserData(
             userId = uid,
@@ -99,6 +99,7 @@ class chatting_ViewModel @Inject constructor(
                 if (it.exists()) {
                     //update
                 } else {
+                    Log.d("Check report", "user created")
                     db.collection(USER_NODE).document(uid).set(userData)
                     inProcess.value = false
                     getUserData(uid)
