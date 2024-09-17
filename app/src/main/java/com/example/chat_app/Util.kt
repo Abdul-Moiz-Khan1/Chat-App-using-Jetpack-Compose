@@ -83,6 +83,11 @@ fun CommonImage(
     custom_contentScale: ContentScale = ContentScale.Crop
 ) {
     val painter = rememberImagePainter(data = image)
-    Image(painter = painter, contentDescription = null , modifier = custom_modifier , contentScale = custom_contentScale)
+    Image(
+        painter = painter,
+        contentDescription = null,
+        modifier = custom_modifier,
+        contentScale = custom_contentScale
+    )
 
 }
