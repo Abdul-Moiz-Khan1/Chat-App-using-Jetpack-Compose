@@ -1,5 +1,6 @@
 package com.example.chat_app
 
+import android.net.Uri
 import android.os.Handler
 import android.util.Log
 import androidx.compose.runtime.Composable
@@ -14,7 +15,9 @@ import com.example.chat_app.data.UserData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
+import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.UUID
 import javax.inject.Inject
 import androidx.navigation.compose.rememberNavController as rememberNavController1
 
@@ -23,7 +26,8 @@ import androidx.navigation.compose.rememberNavController as rememberNavControlle
 class chatting_ViewModel @Inject constructor(
 
     val auth: FirebaseAuth,
-    val db: FirebaseFirestore
+    val db: FirebaseFirestore,
+    val storage: FirebaseStorage
 
 ) : ViewModel() {
 
@@ -55,7 +59,7 @@ class chatting_ViewModel @Inject constructor(
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 signin.value = true
-                    createOrUpdateProfile(name , number ,)
+                                createOrUpdateProfile(name, number)
                                 Log.d("Check report", "Logged in  ")
                             } else {
                                 handleException(task.exception, "Signup Failed")
@@ -72,7 +76,7 @@ class chatting_ViewModel @Inject constructor(
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     signin.value = true
-                    createOrUpdateProfile(name = name , number = number)
+                    createOrUpdateProfile(name = name, number = number)
                     Log.d("Check report", "Logged in  ")
                 } else {
                     handleException(task.exception, "Signup Failed")
@@ -109,6 +113,7 @@ class chatting_ViewModel @Inject constructor(
             }
         }
     }
+
     private fun getUserData(uid: String) {
         inProcess.value = true
         db.collection(USER_NODE).document(uid).addSnapshotListener { value, error ->
@@ -131,27 +136,50 @@ class chatting_ViewModel @Inject constructor(
         eventMutableState.value = Event(message)
         inProcess.value = false
     }
-    fun login(email:String , password: String){
-        if(email.isEmpty() or password.isEmpty()){
+
+    fun login(email: String, password: String) {
+        if (email.isEmpty() or password.isEmpty()) {
             handleException(message = "Please Fill in all the Fields")
             return
-        }
-        else{
+        } else {
             inProcess.value = true
-            auth.signInWithEmailAndPassword(email , password).addOnCompleteListener{
-                if(it.isSuccessful){
+            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
+                if (it.isSuccessful) {
                     signin.value = true
                     inProcess.value = false
                     auth.currentUser?.uid?.let {
                         getUserData(it)
                     }
-                }
-                else{
-                    handleException(it.exception , "Sign in Failed")
+                } else {
+                    handleException(it.exception, "Sign in Failed")
                 }
             }
         }
     }
 
+    fun uploadProfileImage(uri: Uri) {
+        uploadImage(uri){
+            createOrUpdateProfile(null , null ,imageUrl = it.toString())
+        }
+
+    }
+
+    private fun uploadImage(uri: Uri, OnSuccess: (Uri) -> Unit) {
+        inProcess.value = true
+        val storageref = storage.reference
+        val random_uid = UUID.randomUUID()
+        val imageref = storageref.child("images/$random_uid")
+        val uploadTask = imageref.putFile(uri).addOnSuccessListener {
+            val result = it.metadata?.reference?.downloadUrl
+            result?.addOnSuccessListener {
+                inProcess.value = false
+
+            }?.addOnFailureListener {
+                handleException(it, "Failed to get Image")
+
+            }
+        }
+
+    }
 
 }

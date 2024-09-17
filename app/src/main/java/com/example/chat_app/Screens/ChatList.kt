@@ -17,10 +17,13 @@ fun ChatList(navController: NavController, vm: chatting_ViewModel) {
 
     Text(
         text = "Chat list will be Shown Here!",
-        modifier = Modifier.fillMaxSize().wrapContentHeight(),
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentHeight(),
         textAlign = TextAlign.Center,
         fontSize = 38.sp,
         fontWeight = FontWeight.ExtraBold,
         color = Color.DarkGray
     )
+    Bottom_nav(selectedItem = Bottom_nav.CHATLIST, navController = navController)
 }
