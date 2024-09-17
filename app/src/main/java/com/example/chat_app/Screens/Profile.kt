@@ -19,6 +19,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
@@ -47,8 +48,8 @@ fun Profile(navController: NavController, vm: chatting_ViewModel) {
     } else {
         Column {
             profileContent(
-                name = "Moiz",
-                number = "123",
+                name = vm.UserData.value?.userName.toString(),
+                number = vm.UserData.value?.userNumber.toString(),
                 vm = vm,
                 custom_modifier = Modifier
                     .weight(1f)
@@ -59,7 +60,6 @@ fun Profile(navController: NavController, vm: chatting_ViewModel) {
                 OnSave = {},
                 onBack = {},
                 onLogOut = {}
-
             )
             Bottom_nav(selectedItem = Bottom_nav.PROFILE, navController = navController)
         }
@@ -97,59 +97,61 @@ fun profileContent(
                 modifier = Modifier.clickable {
                     OnSave.invoke()
                 })
-            CommonDivider()
-            profile_image(imageurl, vm)
-            CommonDivider()
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = "Name", modifier = Modifier.width(100.dp))
-                TextField(
-                    value = name,
-                    onValueChange = onNameChange,
-                    colors = TextFieldDefaults.colors(
-                        focusedTextColor = Color.Black,
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent,
-                        disabledContainerColor = Color.Transparent
-                    )
+        }
+        CommonDivider()
+        profile_image(imageurl, vm)
+        CommonDivider()
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            OutlinedTextField(
+                label = { Text(text = "Name") },
+                value = name,
+                onValueChange = onNameChange,
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    disabledContainerColor = Color.Transparent
                 )
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = "Number", modifier = Modifier.width(100.dp))
-                TextField(
-                    value = number,
-                    onValueChange = OnNumberChange,
-                    colors = TextFieldDefaults.colors(
-                        focusedTextColor = Color.Black,
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent,
-                        disabledContainerColor = Color.Transparent
-                    )
+            )
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            OutlinedTextField(
+                label = { Text(text = "Number") },
+                value = number,
+                onValueChange = OnNumberChange,
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    disabledContainerColor = Color.Transparent
                 )
-            }
-            CommonDivider()
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(text = "Log Out", modifier = Modifier.clickable {
-                    onLogOut.invoke()
-                })
-
-            }
+            )
+        }
+        CommonDivider()
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(text = "Log Out", modifier = Modifier.clickable {
+                onLogOut.invoke()
+            })
 
         }
+
     }
 }
 
