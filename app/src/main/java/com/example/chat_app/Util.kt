@@ -1,5 +1,6 @@
 package com.example.chat_app
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +22,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
+import coil.compose.rememberImagePainter
+
 
 fun navigateTo(navController: NavController, route: String) {
     navController.navigate(route)
@@ -74,9 +79,10 @@ fun CommonDivider() {
 @Composable
 fun CommonImage(
     image: String?,
-    modifier: Modifier = Modifier.wrapContentSize(),
-    contentScale: ContentScale = ContentScale.Crop
+    custom_modifier: Modifier = Modifier.wrapContentSize(),
+    custom_contentScale: ContentScale = ContentScale.Crop
 ) {
-    val painter =
+    val painter = rememberImagePainter(data = image)
+    Image(painter = painter, contentDescription = null , modifier = custom_modifier , contentScale = custom_contentScale)
 
 }
