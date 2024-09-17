@@ -145,7 +145,6 @@ class chatting_ViewModel @Inject constructor(
                     auth.currentUser?.uid?.let {
                         getUserData(it)
                     }
-
                 }
                 else{
                     handleException(it.exception , "Sign in Failed")
