@@ -1,5 +1,6 @@
 package com.example.chat_app.Screens
 
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
@@ -25,7 +26,9 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,9 +50,16 @@ fun Profile(navController: NavController, vm: chatting_ViewModel) {
         CommonProgressBar()
     } else {
         Column {
+            val Userdata = vm.UserData.value
+            var name = rememberSaveable {
+                mutableStateOf(Userdata?.userName ?: "")
+            }
+            var number = rememberSaveable {
+                mutableStateOf(Userdata?.userNumber ?: "")
+            }
             profileContent(
-                name = vm.UserData.value?.userName.toString(),
-                number = vm.UserData.value?.userNumber.toString(),
+                name = name.toString(),
+                number = number.toString(),
                 vm = vm,
                 custom_modifier = Modifier
                     .weight(1f)
@@ -157,11 +167,12 @@ fun profileContent(
 
 @Composable
 fun profile_image(ImageUrl: String?, vm: chatting_ViewModel) {
-
+    var imageUrl = ""
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
         uri?.let {
+            vm.UserData.value?.imageUrl = uri.toString()
             vm.uploadProfileImage(uri)
         }
     }
@@ -180,7 +191,9 @@ fun profile_image(ImageUrl: String?, vm: chatting_ViewModel) {
                     .padding(8.dp)
                     .size(100.dp)
             ) {
-                CommonImage(image = ImageUrl)
+                CommonImage(
+                    image = ImageUrl ?: imageUrl
+                )
 
             }
             Text(text = "Change Profile Picture")

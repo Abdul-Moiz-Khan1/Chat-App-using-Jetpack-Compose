@@ -4,7 +4,7 @@ data class UserData(
     val userId: String? = "",
     val userName: String? = "",
     val userNumber: String? = "",
-    val imageUrl: String? = "",
+    var imageUrl: String? = "",
 
 
 ){

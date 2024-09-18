@@ -1,5 +1,6 @@
 package com.example.chat_app
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -80,7 +81,7 @@ fun CommonDivider() {
 fun CommonImage(
     image: String?,
     custom_modifier: Modifier = Modifier.wrapContentSize(),
-    custom_contentScale: ContentScale = ContentScale.Crop
+    custom_contentScale: ContentScale = ContentScale.Fit
 ) {
     val painter = rememberImagePainter(data = image)
     Image(
