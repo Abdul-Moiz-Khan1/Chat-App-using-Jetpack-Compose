@@ -184,7 +184,6 @@ fun profile_image(ImageUrl: String?, vm: chatting_ViewModel) {
 
             }
             Text(text = "Change Profile Picture")
-
         }
         if (vm.inProcess.value) {
             CommonProgressBar()
