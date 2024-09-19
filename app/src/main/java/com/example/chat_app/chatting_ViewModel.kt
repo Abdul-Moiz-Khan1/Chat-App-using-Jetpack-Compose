@@ -176,6 +176,7 @@ class chatting_ViewModel @Inject constructor(
             val result = it.metadata?.reference?.downloadUrl
             result?.addOnSuccessListener {
                 inProcess.value = false
+                UserData.value?.imageUrl = uri.toString()
 
             }?.addOnFailureListener {
                 handleException(it, "Failed to get Image")
@@ -184,5 +185,14 @@ class chatting_ViewModel @Inject constructor(
         }
 
     }
+
+    fun logout() {
+        auth.signOut()
+        signin.value = false
+        UserData.value = null
+        eventMutableState.value = Event("logged out")
+
+    }
+
 
 }

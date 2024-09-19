@@ -76,10 +76,13 @@ fun Profile(navController: NavController, vm: chatting_ViewModel) {
                 onNameChange = { name = it },
                 OnNumberChange = { number = it },
                 OnSave = {
-                    vm.createOrUpdateProfile(name = name, number = number , imageurl)
+                    vm.createOrUpdateProfile(name = name, number = number, imageurl)
                 },
                 onBack = { navigateTo(navController, DestinationScreens.ChatList.route) },
-                onLogOut = {}
+                onLogOut = {
+                    vm.logout()
+                    navigateTo(navController, DestinationScreens.Login.route)
+                }
             )
             Bottom_nav(selectedItem = Bottom_nav.PROFILE, navController = navController)
         }
@@ -90,7 +93,7 @@ fun Profile(navController: NavController, vm: chatting_ViewModel) {
 fun profileContent(
     name: String,
     number: String,
-    imageurl:String,
+    imageurl: String,
     vm: chatting_ViewModel,
     custom_modifier: Modifier,
     onNameChange: (String) -> Unit,
@@ -181,7 +184,7 @@ fun profile_image(ImageUrl: String?, vm: chatting_ViewModel) {
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
         uri?.let {
-           imageUrl = uri.toString()
+            imageUrl = uri.toString()
             vm.UserData.value?.imageUrl = imageUrl
             vm.uploadProfileImage(uri)
         }
@@ -202,6 +205,7 @@ fun profile_image(ImageUrl: String?, vm: chatting_ViewModel) {
                     .size(100.dp)
             ) {
                 CommonImage(
+
                     image = ImageUrl ?: imageUrl
                 )
 
