@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.chat_app.data.ChatData
 import com.example.chat_app.data.Event
 import com.example.chat_app.data.USER_NODE
 import com.example.chat_app.data.UserData
@@ -31,10 +32,12 @@ class chatting_ViewModel @Inject constructor(
 
 ) : ViewModel() {
 
+     val chats= mutableStateOf<List<ChatData>>(listOf())
     var signin = mutableStateOf(false)
     var inProcess = mutableStateOf<Boolean>(false)
     val eventMutableState = mutableStateOf<Event<String>?>(null)
     val UserData = mutableStateOf<UserData?>(null)
+    var inProcessChats = mutableStateOf(false)
 
     init {
         val currentuser = auth.currentUser
@@ -161,8 +164,8 @@ class chatting_ViewModel @Inject constructor(
     }
 
     fun uploadProfileImage(uri: Uri) {
-        uploadImage(uri){
-            createOrUpdateProfile(null , null ,imageUrl = it.toString())
+        uploadImage(uri) {
+            createOrUpdateProfile(null, null, imageUrl = it.toString())
         }
 
     }
@@ -191,6 +194,10 @@ class chatting_ViewModel @Inject constructor(
         signin.value = false
         UserData.value = null
         eventMutableState.value = Event("logged out")
+
+    }
+
+    fun addChat(it: String) {
 
     }
 
