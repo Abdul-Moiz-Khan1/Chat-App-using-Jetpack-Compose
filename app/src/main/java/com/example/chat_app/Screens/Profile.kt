@@ -73,7 +73,6 @@ fun Profile(navController: NavController, vm: chatting_ViewModel) {
             )
             Bottom_nav(selectedItem = Bottom_nav.PROFILE, navController = navController)
         }
-
     }
 }
 
