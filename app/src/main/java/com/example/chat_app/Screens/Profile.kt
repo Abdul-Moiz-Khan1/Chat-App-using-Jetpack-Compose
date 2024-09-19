@@ -26,9 +26,11 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,7 +42,9 @@ import androidx.navigation.NavController
 import com.example.chat_app.CommonDivider
 import com.example.chat_app.CommonImage
 import com.example.chat_app.CommonProgressBar
+import com.example.chat_app.DestinationScreens
 import com.example.chat_app.chatting_ViewModel
+import com.example.chat_app.navigateTo
 
 @Composable
 fun Profile(navController: NavController, vm: chatting_ViewModel) {
@@ -51,24 +55,30 @@ fun Profile(navController: NavController, vm: chatting_ViewModel) {
     } else {
         Column {
             val Userdata = vm.UserData.value
-            var name = rememberSaveable {
+            var name by rememberSaveable {
                 mutableStateOf(Userdata?.userName ?: "")
             }
-            var number = rememberSaveable {
+            var number by rememberSaveable {
                 mutableStateOf(Userdata?.userNumber ?: "")
             }
+            var imageurl by rememberSaveable {
+                mutableStateOf(Userdata?.imageUrl ?: "")
+            }
             profileContent(
-                name = name.toString(),
-                number = number.toString(),
+                name = name,
+                number = number,
+                imageurl = imageurl,
                 vm = vm,
                 custom_modifier = Modifier
                     .weight(1f)
                     .verticalScroll(rememberScrollState())
                     .padding(8.dp),
-                onNameChange = { "" },
-                OnNumberChange = { "" },
-                OnSave = {},
-                onBack = {},
+                onNameChange = { name = it },
+                OnNumberChange = { number = it },
+                OnSave = {
+                    vm.createOrUpdateProfile(name = name, number = number , imageurl)
+                },
+                onBack = { navigateTo(navController, DestinationScreens.ChatList.route) },
                 onLogOut = {}
             )
             Bottom_nav(selectedItem = Bottom_nav.PROFILE, navController = navController)
@@ -80,6 +90,7 @@ fun Profile(navController: NavController, vm: chatting_ViewModel) {
 fun profileContent(
     name: String,
     number: String,
+    imageurl:String,
     vm: chatting_ViewModel,
     custom_modifier: Modifier,
     onNameChange: (String) -> Unit,
@@ -88,7 +99,6 @@ fun profileContent(
     onBack: () -> Unit,
     OnSave: () -> Unit,
 ) {
-    val imageurl = vm.UserData.value?.imageUrl
     Column(modifier = Modifier.padding(28.dp)) {
         Row(
             modifier = Modifier
@@ -171,7 +181,8 @@ fun profile_image(ImageUrl: String?, vm: chatting_ViewModel) {
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
         uri?.let {
-            vm.UserData.value?.imageUrl = uri.toString()
+           imageUrl = uri.toString()
+            vm.UserData.value?.imageUrl = imageUrl
             vm.uploadProfileImage(uri)
         }
     }

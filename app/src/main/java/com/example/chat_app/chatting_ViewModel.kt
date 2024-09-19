@@ -89,7 +89,7 @@ class chatting_ViewModel @Inject constructor(
 
     }
 
-    private fun createOrUpdateProfile(name: String?, number: String?, imageUrl: String? = null) {
+    fun createOrUpdateProfile(name: String?, number: String?, imageUrl: String? = null) {
         var uid = auth.currentUser?.uid
         val userData = UserData(
             userId = uid,
@@ -102,6 +102,9 @@ class chatting_ViewModel @Inject constructor(
             db.collection(USER_NODE).document(uid).get().addOnSuccessListener {
                 if (it.exists()) {
                     //update
+                    db.collection(USER_NODE).document(uid).set(userData)
+                    inProcess.value = false
+
                 } else {
                     Log.d("Check report", "user created")
                     db.collection(USER_NODE).document(uid).set(userData)
