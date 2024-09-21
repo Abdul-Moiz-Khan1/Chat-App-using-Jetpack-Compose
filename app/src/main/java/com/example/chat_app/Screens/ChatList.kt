@@ -2,6 +2,7 @@ package com.example.chat_app.Screens
 
 import android.app.Dialog
 import android.icu.text.CaseMap.Title
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -52,9 +53,9 @@ fun ChatList(navController: NavController, vm: chatting_ViewModel) {
         val showDialog = remember {
             mutableStateOf(false)
         }
-        val onFabClick: () -> Unit = {
-            showDialog.value = true
-        }
+        val fabClick:()-> Unit = {
+            Log.d("clicked" , "yes")
+            showDialog.value = true }
         val onDismiss: () -> Unit = { showDialog.value = false }
         val onAddChat: (String) -> Unit = {
             vm.addChat(it)
@@ -62,11 +63,11 @@ fun ChatList(navController: NavController, vm: chatting_ViewModel) {
         }
 
         Scaffold(floatingActionButton = {
-            fab(
+            Fab(
                 showDialog = showDialog.value,
-                fabClick = { onFabClick },
-                onDismiss = { onDismiss },
-                onAddChat = { onAddChat }
+                fabClick = { fabClick() },
+                onDismiss = { onDismiss() },
+                onAddChat = { onAddChat("") }
             )
         }, content = {
             Column(
@@ -93,7 +94,7 @@ fun ChatList(navController: NavController, vm: chatting_ViewModel) {
 }
 
 @Composable
-fun fab(
+fun Fab(
     showDialog: Boolean,
     fabClick: () -> Unit,
     onDismiss: () -> Unit,
@@ -102,6 +103,7 @@ fun fab(
     val addChatNumber = remember {
         mutableStateOf("")
     }
+    var ShowDialog = showDialog
     if (showDialog) {
         AlertDialog(onDismissRequest = {
             onDismiss.invoke()
@@ -117,9 +119,11 @@ fun fab(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
         })
-    } else {
+    }else{
         FloatingActionButton(
-            onClick = { fabClick },
+            onClick = {
+                fabClick()
+            },
             containerColor = MaterialTheme.colorScheme.secondary,
             shape = CircleShape,
             modifier = Modifier.padding(bottom = 40.dp)
