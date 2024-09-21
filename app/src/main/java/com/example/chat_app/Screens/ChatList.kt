@@ -86,13 +86,10 @@ fun ChatList(navController: NavController, vm: chatting_ViewModel) {
                         Text(text = "No Chats Available")
                     }
                 }
-
                 Bottom_nav(selectedItem = Bottom_nav.CHATLIST, navController = navController)
             }
         })
-
     }
-
 }
 
 @Composable
@@ -120,7 +117,6 @@ fun fab(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
         })
-
     } else {
         FloatingActionButton(
             onClick = { fabClick },
