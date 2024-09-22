@@ -5,17 +5,22 @@ import android.os.Handler
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.chat_app.data.CHATS
 import com.example.chat_app.data.ChatData
+import com.example.chat_app.data.ChatUser
 import com.example.chat_app.data.Event
 import com.example.chat_app.data.USER_NODE
 import com.example.chat_app.data.UserData
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
+import com.google.firebase.firestore.toObjects
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.UUID
@@ -32,7 +37,7 @@ class chatting_ViewModel @Inject constructor(
 
 ) : ViewModel() {
 
-     val chats= mutableStateOf<List<ChatData>>(listOf())
+    val chats = mutableStateOf<List<ChatData>>(listOf())
     var signin = mutableStateOf(false)
     var inProcess = mutableStateOf<Boolean>(false)
     val eventMutableState = mutableStateOf<Event<String>?>(null)
@@ -197,7 +202,63 @@ class chatting_ViewModel @Inject constructor(
 
     }
 
-    fun addChat(it: String) {
+    fun addChat(number: String) {
+        if (number.isEmpty() or !number.isDigitsOnly()) {
+            handleException(message = "number must contain numbers only ")
+        } else {
+            db.collection(CHATS).where(
+                Filter.or(
+                    Filter.and(
+                        Filter.equalTo("user1.number", number), Filter.equalTo(
+                            "user2.number",
+                            UserData.value?.userNumber
+                        )
+                    ),
+                    Filter.and(
+                        Filter.equalTo("user1.number", UserData.value?.userNumber), Filter.equalTo(
+                            "user2.number",
+                            number
+                        )
+                    )
+                )
+            ).get().addOnSuccessListener { it ->
+                if (it.isEmpty) {
+                    db.collection(USER_NODE).whereEqualTo("userNumber", number).get()
+                        .addOnSuccessListener { data ->
+                            if (data.isEmpty) {
+                                handleException(message = "Number Not Found")
+                            } else {
+                                val chatPartners = data.toObjects<UserData>()[0]
+                                val id = db.collection(CHATS).document().id
+                                val chat =
+                                    ChatData(
+                                        chatId = id,
+                                        user1 = ChatUser(
+                                            UserData.value?.userId,
+                                            UserData.value?.userName,
+                                            UserData.value?.imageUrl,
+                                            UserData.value?.userNumber
+                                        ),
+                                        user2 = ChatUser(
+                                            chatPartners.userId,
+                                            chatPartners.userName,
+                                            chatPartners.imageUrl,
+                                            chatPartners.userNumber
+                                        )
+
+                                    )
+                                db.collection(CHATS).document(id).set(chat)
+                            }
+                        }
+                        .addOnFailureListener {
+                            handleException(it , "exception")
+                        }
+
+                } else {
+                    handleException(message = "Chats already Exists")
+                }
+            }
+        }
 
     }
 
