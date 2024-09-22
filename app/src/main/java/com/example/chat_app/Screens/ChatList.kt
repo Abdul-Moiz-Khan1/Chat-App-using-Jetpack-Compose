@@ -103,11 +103,9 @@ fun Fab(
     val addChatNumber = remember {
         mutableStateOf("")
     }
-    var ShowDialog = showDialog
     if (showDialog) {
         AlertDialog(onDismissRequest = {
             onDismiss.invoke()
-            addChatNumber.value = ""
         }, confirmButton = {
             Button(onClick = { onAddChat(addChatNumber.value) }) {
                 Text(text = "Add Chat")

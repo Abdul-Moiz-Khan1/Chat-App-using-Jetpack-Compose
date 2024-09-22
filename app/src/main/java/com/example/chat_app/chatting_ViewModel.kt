@@ -140,7 +140,7 @@ class chatting_ViewModel @Inject constructor(
     }
 
     fun handleException(exception: Exception? = null, message: String) {
-        Log.d("Check report", "Live chat exception", exception)
+        Log.e("Check report", message, exception)
         exception?.printStackTrace()
         val errorMsg = exception!!.localizedMessage
         val message = if (message.isEmpty()) errorMsg else message
@@ -204,7 +204,7 @@ class chatting_ViewModel @Inject constructor(
 
     fun addChat(number: String) {
         if (number.isEmpty() or !number.isDigitsOnly()) {
-            handleException(message = "number must contain numbers only ")
+            handleException(message = "number must contain numbers only")
         } else {
             db.collection(CHATS).where(
                 Filter.or(
