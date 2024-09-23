@@ -122,5 +122,4 @@ fun SignUp(navController: NavController, vm: chatting_ViewModel) {
             navigateTo(navController, DestinationScreens.ChatList.route)
         }
     }
-
 }
