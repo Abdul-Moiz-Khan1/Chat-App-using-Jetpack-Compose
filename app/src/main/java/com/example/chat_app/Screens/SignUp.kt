@@ -118,6 +118,8 @@ fun SignUp(navController: NavController, vm: chatting_ViewModel) {
             CommonProgressBar()
         }
         if (vm.signin.value) {
+
+
             navigateTo(navController, DestinationScreens.ChatList.route)
         }
     }
