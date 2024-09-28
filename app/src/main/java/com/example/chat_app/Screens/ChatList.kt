@@ -127,7 +127,6 @@ fun Fab(
             modifier = Modifier.padding(bottom = 40.dp)
         ) {
             Icon(imageVector = Icons.Rounded.Add, contentDescription = null, tint = Color.White)
-
         }
     }
 }
