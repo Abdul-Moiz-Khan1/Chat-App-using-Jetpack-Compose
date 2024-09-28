@@ -48,7 +48,6 @@ fun SignUp(navController: NavController, vm: chatting_ViewModel) {
                     rememberScrollState()
                 ), horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
             var name_state = remember {
                 mutableStateOf(TextFieldValue())
             }
