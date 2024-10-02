@@ -189,6 +189,8 @@ class chatting_ViewModel @Inject constructor(
             }?.addOnFailureListener {
                 handleException(it, "Failed to get Image")
 
+
+
             }
         }
 
