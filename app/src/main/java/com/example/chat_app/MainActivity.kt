@@ -41,6 +41,7 @@ sealed class DestinationScreens(var route: String) {
 }
 
 @AndroidEntryPoint
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +59,7 @@ class MainActivity : ComponentActivity() {
             composable(DestinationScreens.Signup.route) {
                 SignUp(navController, vm)
             }
+
             composable(DestinationScreens.Login.route) {
                 Login(navController, vm)
             }
