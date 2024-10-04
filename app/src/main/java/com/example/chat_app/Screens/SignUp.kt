@@ -42,7 +42,6 @@ fun SignUp(navController: NavController, vm: chatting_ViewModel) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
-
                 .fillMaxSize()
                 .wrapContentHeight()
                 .verticalScroll(
