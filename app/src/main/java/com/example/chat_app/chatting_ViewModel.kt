@@ -190,7 +190,6 @@ class chatting_ViewModel @Inject constructor(
                 handleException(it, "Failed to get Image")
             }
         }
-
     }
 
     fun logout() {
