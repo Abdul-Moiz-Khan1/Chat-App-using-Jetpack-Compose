@@ -94,7 +94,6 @@ class chatting_ViewModel @Inject constructor(
         } catch (e: Exception) {
             Log.e("Check report", "Error while loggig in ", e)
         }
-
     }
 
     fun createOrUpdateProfile(name: String?, number: String?, imageUrl: String? = null) {
