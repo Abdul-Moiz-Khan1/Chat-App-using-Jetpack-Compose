@@ -71,7 +71,6 @@ class chatting_ViewModel @Inject constructor(
                                 Log.d("Check report", "Logged in  ")
                             } else {
                                 handleException(task.exception, "Signup Failed")
-
                             }
                         }
                 } else {
@@ -137,7 +136,6 @@ class chatting_ViewModel @Inject constructor(
             }
         }
     }
-
     fun handleException(exception: Exception? = null, message: String) {
         Log.e("Check report", message, exception)
         exception?.printStackTrace()
