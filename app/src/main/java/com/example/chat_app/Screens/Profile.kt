@@ -48,7 +48,6 @@ import com.example.chat_app.navigateTo
 
 @Composable
 fun Profile(navController: NavController, vm: chatting_ViewModel) {
-
     val inprocess = vm.inProcess.value
     if (inprocess) {
         CommonProgressBar()
